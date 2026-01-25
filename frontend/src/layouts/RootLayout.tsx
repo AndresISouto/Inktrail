@@ -1,5 +1,15 @@
+import { Outlet } from "react-router"
+import Navbar from "../components/shared/Navbar"
+import { Footer } from "@/components/shared/Footer"
+
 export const RootLayout = () => {
   return (
-    <h1>root layout</h1>
+    <>
+      <Navbar></Navbar>
+      <main>
+        <Outlet />
+      </main>
+      <Footer></Footer>
+    </>
   )
 }
