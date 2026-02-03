@@ -7,13 +7,17 @@ export const BookDetail = () => {
   const { title } = useParams();
 
   // Find the book by comparing slugified titles
-  const book = books.find(b => slugify(b.BookTitle) === title);
+  const book = books.find((b) => slugify(b.BookTitle) === title);
 
   if (!book) {
     return (
       <div className="max-w-4xl mx-auto p-6 text-center">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">Book Not Found</h1>
-        <p className="text-gray-600 mb-6">The book you're looking for doesn't exist.</p>
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          Book Not Found
+        </h1>
+        <p className="text-gray-600 mb-6">
+          The book you're looking for doesn't exist.
+        </p>
         <Link
           to="/"
           className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700"
@@ -56,16 +60,22 @@ export const BookDetail = () => {
         {/* Book Details */}
         <div className="flex flex-col justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">{book.BookTitle}</h1>
+            <h1 className="text-3xl font-bold text-gray-800 mb-4">
+              {book.BookTitle}
+            </h1>
 
             <div className="space-y-3 mb-6">
               <div className="flex items-baseline">
-                <span className="font-semibold text-gray-700 w-32">Author:</span>
+                <span className="font-semibold text-gray-700 w-32">
+                  Author:
+                </span>
                 <span className="text-gray-600">{book.BookAuthor}</span>
               </div>
 
               <div className="flex items-baseline">
-                <span className="font-semibold text-gray-700 w-32">Publisher:</span>
+                <span className="font-semibold text-gray-700 w-32">
+                  Publisher:
+                </span>
                 <span className="text-gray-600">{book.Publisher}</span>
               </div>
 

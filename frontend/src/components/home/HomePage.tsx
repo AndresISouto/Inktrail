@@ -12,7 +12,7 @@ export const HomePage = () => {
         </h2>
         <article className="flex items-center justify-around p-4">
           {books.map((book) => (
-            <BookCard book={book}></BookCard>
+            <BookCard key={book.id} book={book}></BookCard>
           ))}
         </article>
         <h2 className="text-center font-semibold text-4xl p-4 m-4">
@@ -20,7 +20,7 @@ export const HomePage = () => {
         </h2>
         <article className="flex items-center justify-around p-4">
           {books.map((book) => (
-            <BookCard book={book}></BookCard>
+            <BookCard key={book.id} book={book}></BookCard>
           ))}
         </article>
       </section>
