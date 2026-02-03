@@ -11,3 +11,12 @@ export interface Book {
   ImageURLM: string;
   ImageURLL: string;
 }
+export interface PaginatedBooksResponse {
+  content: Book[];
+  first: boolean;
+  last: boolean;
+  number: number; // 0-based page index
+  totalElements: number;
+  totalPages: number;
+  size: number;
+}
