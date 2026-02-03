@@ -7,25 +7,25 @@ import { AboutPage } from "../components/pages/AboutPage";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <RootLayout></RootLayout>,
     children: [
       {
         index: true,
-        element: <HomePage></HomePage>
+        element: <HomePage></HomePage>,
       },
       {
-        path: 'book/:title',
-        element: <BookDetail></BookDetail>
+        path: "book/:title",
+        element: <BookDetail></BookDetail>,
       },
       {
-        path: 'libros',
-        element: <BooksPage></BooksPage>
+        path: "libros",
+        element: <BooksPage></BooksPage>,
       },
       {
-        path: 'about',
-        element: <AboutPage></AboutPage>
-      }
-    ]
-  }
+        path: "about",
+        element: <AboutPage></AboutPage>,
+      },
+    ],
+  },
 ]);
