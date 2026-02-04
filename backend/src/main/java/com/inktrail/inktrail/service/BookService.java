@@ -1,5 +1,7 @@
 package com.inktrail.inktrail.service;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +29,13 @@ public class BookService {
     Page<Book> pagedBooks = bookRepository.findAll(pageable);
     Page<BookDTO> dto = bookMapper.toDtoPage(pagedBooks);
 
+    return dto;
+  }
+
+  public BookDTO getBookById(Long id) {
+    Book book = bookRepository.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("can not find a book with that id"));
+    BookDTO dto = bookMapper.toDTO(book);
     return dto;
   }
 }
