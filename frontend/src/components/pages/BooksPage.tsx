@@ -4,6 +4,7 @@ import { BookCard } from "../shared/BookCard";
 import type { Book, PaginatedBooksResponse } from "@/types/book.type";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Link, useSearchParams } from "react-router";
+import { useEffect } from "react";
 
 export const BooksPage = () => {
   const [searchParams] = useSearchParams();
@@ -14,6 +15,13 @@ export const BooksPage = () => {
     queryFn: (): Promise<PaginatedBooksResponse> =>
       fetchBooksPaginated(currentPage),
   });
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [currentPage]);
 
   const getAdjacentPages = (current: number, total: number): number[] => {
     const pages: number[] = [];
@@ -47,7 +55,7 @@ export const BooksPage = () => {
       <section className="flex justify-center items-center gap-4 mt-8">
         <button
           disabled={data.first}
-          className={`px-3 py-1 rounded ${data.first ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+          className={`p-1 rounded-full ${data.first ? "bg-gray-300" : "bg-blue-500 hover:bg-blue-600"}`}
         >
           <FaArrowLeft />
         </button>
@@ -56,8 +64,8 @@ export const BooksPage = () => {
           {getAdjacentPages(data.number, data.totalPages).map((pageNum) => (
             <Link
               key={pageNum}
-              to={`/libros?page=${pageNum + 1}`}
-              className={`px-3 py-1 rounded ${
+              to={`/libros?page=${pageNum}`}
+              className={`px-3 py-1 rounded-full ${
                 pageNum === data.number
                   ? "bg-blue-600 text-white"
                   : "bg-gray-200 hover:bg-gray-300"
@@ -70,7 +78,7 @@ export const BooksPage = () => {
 
         <button
           disabled={data.last}
-          className={`px-3 py-1 rounded ${data.last ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+          className={`p-1 rounded-full ${data.last ? "bg-gray-300 " : "bg-blue-500 hover:bg-blue-600"}`}
         >
           <FaArrowRight />
         </button>
