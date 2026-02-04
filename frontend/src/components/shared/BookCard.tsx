@@ -19,7 +19,7 @@ export const BookCard = ({ book }: BookCardProps) => {
 
   return (
     <Link
-      to={`/book/${bookSlug}`}
+      to={`/book/${bookSlug}/${book.id}`}
       className="block transition-transform duration-300 hover:shadow-xl hover:-translate-y-1"
     >
       <article className="p-4 border border-gray-200 rounded-lg shadow-lg flex flex-col items-center text-center w-56 cursor-pointer">
@@ -28,7 +28,9 @@ export const BookCard = ({ book }: BookCardProps) => {
           src={book.ImageURLM}
           alt={book.BookTitle}
         />
-        <h2 className="text-lg font-semibold text-gray-800 mb-1 line-clamp-2">{book.BookTitle}</h2>
+        <h2 className="text-lg font-semibold text-gray-800 mb-1 line-clamp-2">
+          {book.BookTitle}
+        </h2>
         <p className="text-sm text-gray-600">Author: {book.BookAuthor}</p>
         <p className="text-sm text-gray-600">Publisher: {book.Publisher}</p>
         <p className="text-sm text-gray-600">Year: {book.YearOfPublication}</p>
