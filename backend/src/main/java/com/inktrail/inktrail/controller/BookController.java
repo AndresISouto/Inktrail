@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,6 +25,13 @@ public class BookController {
   @GetMapping
   public ResponseEntity<Page<BookDTO>> getPagedBooks(@RequestParam int page) {
     Page<BookDTO> response = bookService.getAllBooksPaged(page);
+
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/{title}/{id}")
+  public ResponseEntity<BookDTO> getBookById(@PathVariable Long id) {
+    BookDTO response = bookService.getBookById(id);
 
     return ResponseEntity.ok(response);
   }
