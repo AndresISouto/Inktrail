@@ -134,9 +134,13 @@ export const CartPage = () => {
                 <span>Total</span>
                 <span className="text-teal-600">{total}€</span>
               </div>
-              <button className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors">
+              <a
+                href="https://www.paypal.com/es/home?locale.x=en_ES&utm_medium=google&utm_source=sem&utm_campaign=B0005WTX&kid=13714856&gclsrc=aw.ds&gad_source=1&gad_campaignid=23468797607&gclid=CjwKCAiAwNDMBhBfEiwAd7ti1DD8eEZ-MOIHxSKWx1FrpCl3RyX1_Jwj1481Jul9lyPgeUVMp5Ew-RoCbucQAvD_BwE"
+                target="_blank"
+                className="w-full bg-teal-600 text-white py-3 p-2 rounded-lg font-semibold hover:bg-teal-700 transition-colors"
+              >
                 Proceder al pago
-              </button>
+              </a>
             </div>
           </div>
         </div>
