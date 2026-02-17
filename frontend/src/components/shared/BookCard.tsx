@@ -2,6 +2,9 @@ import { FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router";
 import type { Book } from "../../types/book.type";
 import { slugify } from "../../utils/slugify";
+import { useUserStore } from "@/globalState/user";
+import { addToCart } from "@/api/cartQueries";
+import { useNavigate } from "react-router";
 
 interface BookCardProps {
   book: Book;
@@ -9,12 +12,17 @@ interface BookCardProps {
 
 export const BookCard = ({ book }: BookCardProps) => {
   const bookSlug = slugify(book.BookTitle);
+  const userId = useUserStore((state) => state.userId);
+  const navigate = useNavigate();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // Add to cart logic here
-    console.log("Added to cart:", book.BookTitle);
+    if (userId === null) {
+      navigate("/login");
+    } else {
+      addToCart(userId, book.id);
+    }
   };
 
   return (
@@ -25,7 +33,7 @@ export const BookCard = ({ book }: BookCardProps) => {
       <article className="p-4 border border-gray-200 rounded-lg shadow-lg flex flex-col items-center text-center w-56 cursor-pointer">
         <img
           className="h-64 w-48 object-cover rounded mb-4 shadow-md"
-          src={book.ImageURLM}
+          src={book.ImageURLL}
           alt={book.BookTitle}
         />
         <h2 className="text-lg font-semibold text-gray-800 mb-1 line-clamp-2">
