@@ -1,15 +1,32 @@
 import { Link, useParams } from "react-router";
 import { FiShoppingCart, FiArrowLeft } from "react-icons/fi";
-import { books } from "../../data/bookData";
-import { slugify } from "../../utils/slugify";
+import type { Book } from "@/types/book.type";
+import { useQuery } from "@tanstack/react-query";
+import { fetchBookById } from "@/api/bookQueries";
+import { useUserStore } from "@/globalState/user";
+import { useNavigate } from "react-router";
+import { addToCart } from "@/api/cartQueries";
 
 export const BookDetail = () => {
-  const { title } = useParams();
+  const { id } = useParams();
+  const idNumber = parseInt(id || "0");
+  const userId = useUserStore((state) => state.userId);
+  const navigate = useNavigate();
 
-  // Find the book by comparing slugified titles
-  const book = books.find((b) => slugify(b.BookTitle) === title);
+  const {
+    data: book,
+    isPending,
+    isError,
+  } = useQuery<Book>({
+    queryKey: ["id"],
+    queryFn: () => fetchBookById(idNumber),
+  });
 
-  if (!book) {
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
     return (
       <div className="max-w-4xl mx-auto p-6 text-center">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
@@ -29,9 +46,14 @@ export const BookDetail = () => {
     );
   }
 
-  const handleAddToCart = () => {
-    console.log("Added to cart:", book.BookTitle);
-    // Add to cart logic here
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (userId === null) {
+      navigate("/login");
+    } else {
+      addToCart(userId, book.id);
+    }
   };
 
   return (
@@ -39,7 +61,7 @@ export const BookDetail = () => {
       {/* Breadcrumb Navigation */}
       <nav className="mb-6">
         <Link
-          to="/"
+          to="/libros"
           className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 mb-6"
         >
           <FiArrowLeft />
@@ -51,7 +73,7 @@ export const BookDetail = () => {
         {/* Book Image */}
         <div className="flex justify-center">
           <img
-            className="max-w-full h-auto rounded-lg shadow-lg max-h-[600px] object-cover"
+            className="max-w-full h-auto rounded-lg shadow-lg max-h-100 object-cover"
             src={book.ImageURLL}
             alt={book.BookTitle}
           />
