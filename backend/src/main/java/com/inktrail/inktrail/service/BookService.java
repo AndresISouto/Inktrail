@@ -38,4 +38,10 @@ public class BookService {
     BookDTO dto = bookMapper.toDTO(book);
     return dto;
   }
+
+  public Page<BookDTO> searchBooksByTitle(String title, int page) {
+    Pageable pageable = PageRequest.of(page, 12);
+    Page<Book> books = bookRepository.findByBookTitleContainingIgnoreCase(title, pageable);
+    return bookMapper.toDtoPage(books);
+  }
 }

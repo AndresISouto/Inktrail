@@ -35,10 +35,6 @@ public class User {
   private String password;
 
   @Column(nullable = false, name = "full_name")
-  private String fullName;
+  private String name;
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name = "user_roles")
-  @Column(name = "role")
-  private Set<String> roles;
 }

@@ -29,10 +29,18 @@ public class BookController {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("/{title}/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<BookDTO> getBookById(@PathVariable Long id) {
     BookDTO response = bookService.getBookById(id);
 
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<Page<BookDTO>> searchBooks(
+      @RequestParam String title,
+      @RequestParam int page) {
+    Page<BookDTO> response = bookService.searchBooksByTitle(title, page);
     return ResponseEntity.ok(response);
   }
 
