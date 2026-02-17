@@ -7,8 +7,8 @@ import { useState, useEffect } from "react";
 
 export const CartPage = () => {
   const userId = useUserStore((s) => s.userId);
-  const [orderItems, setOrderItems] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [orderItems, setOrderItems] = useState<any[]>([]);
+  const [total, setTotal] = useState<number>(0);
 
   const { data, error, isPending, isError } = useQuery({
     queryKey: ["cart", userId],
