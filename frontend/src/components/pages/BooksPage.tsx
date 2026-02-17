@@ -1,19 +1,21 @@
-import { fetchBooksPaginated } from "@/api/bookQueries";
+import { fetchBooksPaginated, searchBooks } from "@/api/bookQueries";
 import { useQuery } from "@tanstack/react-query";
 import { BookCard } from "../shared/BookCard";
 import type { Book, PaginatedBooksResponse } from "@/types/book.type";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Link, useSearchParams } from "react-router";
 import { useEffect } from "react";
 
 export const BooksPage = () => {
   const [searchParams] = useSearchParams();
   const currentPage: number = parseInt(searchParams.get("page") || "0");
+  const searchQuery: string | null = searchParams.get("title");
 
   const { data, error, isPending, isError } = useQuery<PaginatedBooksResponse>({
-    queryKey: ["allBooksPaged", currentPage],
+    queryKey: ["books", searchQuery, currentPage],
     queryFn: (): Promise<PaginatedBooksResponse> =>
-      fetchBooksPaginated(currentPage),
+      searchQuery
+        ? searchBooks(searchQuery, currentPage)
+        : fetchBooksPaginated(currentPage),
   });
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export const BooksPage = () => {
       top: 0,
       behavior: "smooth",
     });
-  }, [currentPage]);
+  }, [currentPage, searchQuery]);
 
   const getAdjacentPages = (current: number, total: number): number[] => {
     const pages: number[] = [];
@@ -44,27 +46,35 @@ export const BooksPage = () => {
 
   return (
     <>
-      <h2 className="text-center font-semibold text-4xl p-4 m-4">
-        Los Mejores libros
-      </h2>
-      <article className="grid grid-cols-4 gap-4 place-items-center">
-        {data.content.map((book: Book) => (
-          <BookCard key={book.id} book={book}></BookCard>
-        ))}
-      </article>
+      <div className="flex justify-between items-center px-8">
+        <h2 className="font-semibold text-4xl p-4 m-4">
+          {searchQuery
+            ? `Resultados para "${searchQuery}"`
+            : "Los Mejores libros"}
+        </h2>
+        {searchQuery && (
+          <Link to="/libros" className="text-cyan-600 hover:underline text-sm">
+            Limpiar búsqueda
+          </Link>
+        )}
+      </div>
+      {data.content.length === 0 ? (
+        <p className="text-center text-gray-500 py-8">
+          No se encontraron libros para "{searchQuery}"
+        </p>
+      ) : (
+        <article className="grid grid-cols-4 gap-4 place-items-center">
+          {data.content.map((book: Book) => (
+            <BookCard key={book.id} book={book}></BookCard>
+          ))}
+        </article>
+      )}
       <section className="flex justify-center items-center gap-4 mt-8">
-        <button
-          disabled={data.first}
-          className={`p-1 rounded-full ${data.first ? "bg-gray-300" : "bg-blue-500 hover:bg-blue-600"}`}
-        >
-          <FaArrowLeft />
-        </button>
-
         <div className="flex gap-2">
           {getAdjacentPages(data.number, data.totalPages).map((pageNum) => (
             <Link
               key={pageNum}
-              to={`/libros?page=${pageNum}`}
+              to={`/libros?page=${pageNum}${searchQuery ? `&q=${searchQuery}` : ""}`}
               className={`px-3 py-1 rounded-full ${
                 pageNum === data.number
                   ? "bg-blue-600 text-white"
@@ -75,13 +85,6 @@ export const BooksPage = () => {
             </Link>
           ))}
         </div>
-
-        <button
-          disabled={data.last}
-          className={`p-1 rounded-full ${data.last ? "bg-gray-300 " : "bg-blue-500 hover:bg-blue-600"}`}
-        >
-          <FaArrowRight />
-        </button>
       </section>
     </>
   );
